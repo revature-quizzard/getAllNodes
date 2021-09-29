@@ -11,7 +11,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @DynamoDBTable(tableName = "ForumNodes")
 public class Node {
 
@@ -42,5 +41,17 @@ public class Node {
 
     @DynamoDBAttribute
     private List<String> tags;
+
+    public Node(String id, String subject, List<String> ancestors, String parent, String description, int childCount, String dateCreated, String owner, List<String> tags) {
+        this.id = id;
+        this.subject = subject;
+        this.description = description;
+        this.ancestors = ancestors;
+        this.parent = parent;
+        this.childCount = childCount;
+        this.dateCreated = dateCreated;
+        this.owner = owner;
+        this.tags = tags;
+    }
 
 }

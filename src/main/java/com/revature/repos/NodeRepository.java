@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.revature.models.Node;
+import com.revature.service.NodeService;
 
 import javax.xml.bind.ValidationException;
 import java.util.HashMap;
@@ -49,7 +50,7 @@ public class NodeRepository {
     }
 
     public List<Node> getAllThreads(String id) throws RuntimeException, ValidationException {
-        if(!getSubforumById(id).isPresent())
+        if(!getSubforumById(id).isPresent() || !NodeService.isValidParent((getParent(id).get())))
             throw new ValidationException("Subforum ID does not exist");
 
         Map<String, AttributeValue> queryInputs = new HashMap<>();
@@ -62,6 +63,17 @@ public class NodeRepository {
                 .withConsistentRead(false);
 
         return dbReader.query(Node.class, query);
+    }
+
+    public Optional<? extends Node> getParent(String parentID) {
+        Map<String, AttributeValue> queryInputs = new HashMap<>();
+        queryInputs.put(":id", new AttributeValue().withS(parentID));
+
+        DynamoDBQueryExpression query = new DynamoDBQueryExpression()
+                .withKeyConditionExpression("id = :id")
+                .withExpressionAttributeValues(queryInputs);
+
+        return dbReader.query(Node.class, query).stream().findFirst();
     }
 
 }
