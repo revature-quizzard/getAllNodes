@@ -1,0 +1,9 @@
+Resources:
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 300
+      MemorySize: 256
+      Handler: com.revature.get_nodes.GetAllSubForumsHandler
+      CodeUri: C:\Users\Sean\getSubforum
+      Runtime: java8.al2
