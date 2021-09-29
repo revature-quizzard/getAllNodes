@@ -21,7 +21,7 @@ public class NodeRepository {
 
     public NodeRepository(){ dbReader = new DynamoDBMapper(AmazonDynamoDBClientBuilder.defaultClient());}
 
-    public List<Node> getAllSubforums(){
+    public List<Node> getAllSubForums(){
 
         Map<String, AttributeValue> queryInputs = new HashMap<>();
         queryInputs.put(":parent", new AttributeValue().withS("NULL"));
