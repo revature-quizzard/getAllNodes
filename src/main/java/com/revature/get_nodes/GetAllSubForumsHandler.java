@@ -11,6 +11,7 @@ import com.revature.models.Node;
 import com.revature.repos.NodeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
@@ -28,4 +29,5 @@ public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyReq
 
         return responseEvent;
     }
+
 }

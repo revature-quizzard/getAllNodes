@@ -3,12 +3,14 @@ package com.revature.repos;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.revature.models.Node;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class NodeRepository {
 
@@ -25,6 +27,21 @@ public class NodeRepository {
                 .withExpressionAttributeValues(queryInputs);
 
         return dbReader.query(Node.class,query);
+
+    }
+
+    public Optional<Node> getSubforumById(String id) {
+
+        Map<String, AttributeValue> queryInputs = new HashMap<>();
+        queryInputs.put(":id", new AttributeValue().withS(id));
+
+        DynamoDBScanExpression query = new DynamoDBScanExpression()
+                .withFilterExpression("id = :id")
+                .withExpressionAttributeValues(queryInputs);
+
+        List<Node> queryResult = dbReader.scan(Node.class, query);
+
+        return queryResult.stream().findFirst();
 
     }
 
