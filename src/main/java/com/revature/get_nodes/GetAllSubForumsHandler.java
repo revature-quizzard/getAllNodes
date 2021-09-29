@@ -22,7 +22,7 @@ public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyReq
         LambdaLogger logger = context.getLogger();
         logger.log("RECEIVED EVENT: " + requestEvent);
 
-        List<Node> subForums = nodeRepo.getAllSubforums();
+        List<Node> subForums = nodeRepo.getAllSubForums();
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
         responseEvent.setBody(mapper.toJson(subForums));
 

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class Node {
     @DynamoDBAttribute
     private int childCount;
 
+
     @DynamoDBIndexRangeKey(attributeName = "date_created", globalSecondaryIndexName = "parent-date_created-index")
     private String dateCreated;
 
@@ -52,6 +54,7 @@ public class Node {
         this.dateCreated = dateCreated;
         this.owner = owner;
         this.tags = tags;
+
     }
 
 }

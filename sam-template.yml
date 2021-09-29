@@ -1,6 +1,7 @@
 # SAM template for CodeBuild
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: 'AWS::Serverless-2016-10-31'
+<<<<<<< HEAD
 Description: A simple AWS Lambda for fetching all comments of a subforum from the ForumNodes DynamnoDB table.
 Resources:
   getCommentsForums:
@@ -8,6 +9,15 @@ Resources:
     Properties:
       CodeUri: target/getComments-1.0-SNAPSHOT.jar
       Handler: com.revature.get_nodes.GetAllSubForumsHandler
+=======
+Description: A simple AWS Lambda for searching all subforums within the ForumNodes DynamnoDB table.
+Resources:
+  getSubForums:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/getSubForums-1.0-SNAPSHOT.jar
+      Handler: com.revature.get_students.GetAllSubForumsHandler
+>>>>>>> 99e8f630c481215b40b0cdab7135d6c13cfd70b9
       Runtime: java8.al2
       Description: Java function
       MemorySize: 256
