@@ -26,6 +26,7 @@ public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyReq
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
         responseEvent.setBody(mapper.toJson(subForums));
 
+        responseEvent.setStatusCode(200);
         return responseEvent;
     }
 

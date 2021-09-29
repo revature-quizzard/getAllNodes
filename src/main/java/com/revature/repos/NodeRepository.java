@@ -19,16 +19,18 @@ public class NodeRepository {
 
     public NodeRepository(){ dbReader = new DynamoDBMapper(AmazonDynamoDBClientBuilder.defaultClient());}
 
-    public List<Node> getAllSubforums() {
+    public List<Node> getAllSubforums(){
+
         Map<String, AttributeValue> queryInputs = new HashMap<>();
-        queryInputs.put(":ancestors", new AttributeValue().withS(null));
+        queryInputs.put(":parent", new AttributeValue().withS("NULL"));
 
         DynamoDBQueryExpression query = new DynamoDBQueryExpression()
-                .withFilterExpression("ancestors = :ancestors")
-                .withExpressionAttributeValues(queryInputs);
+                .withIndexName("parent-date_created-index")
+                .withKeyConditionExpression("parent = :parent")
+                .withExpressionAttributeValues(queryInputs)
+                .withConsistentRead(false);
 
-        return dbReader.query(Node.class,query);
-
+        return dbReader.query(Node.class, query);
     }
 
     public Optional<Node> getSubforumById(String id) {
@@ -54,8 +56,10 @@ public class NodeRepository {
         queryInputs.put(":id", new AttributeValue().withS(id));
 
         DynamoDBQueryExpression query = new DynamoDBQueryExpression()
-                .withFilterExpression("id = :id")
-                .withExpressionAttributeValues(queryInputs);
+                .withIndexName("parent-date_created-index")
+                .withKeyConditionExpression("id = :id")
+                .withExpressionAttributeValues(queryInputs)
+                .withConsistentRead(false);
 
         return dbReader.query(Node.class, query);
     }
