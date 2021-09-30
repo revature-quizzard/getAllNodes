@@ -58,7 +58,6 @@ public class NodeRepository {
         queryInputs.put(":id", new AttributeValue().withS(id));
 
         DynamoDBQueryExpression query = new DynamoDBQueryExpression()
-                .withIndexName("parent-date_created-index")
                 .withKeyConditionExpression("id = :id")
                 .withExpressionAttributeValues(queryInputs)
                 .withConsistentRead(false);
