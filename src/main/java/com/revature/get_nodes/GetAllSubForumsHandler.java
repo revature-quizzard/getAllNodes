@@ -9,23 +9,32 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.revature.models.Node;
 import com.revature.repos.NodeRepository;
+import lombok.SneakyThrows;
 
 import java.util.List;
+import java.util.Map;
 
 public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
     private static final Gson mapper = new GsonBuilder().setPrettyPrinting().create();
     private final NodeRepository nodeRepo = new NodeRepository();
 
+    @SneakyThrows
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
         LambdaLogger logger = context.getLogger();
         logger.log("RECEIVED EVENT: " + requestEvent);
 
-        List<Node> subForums = nodeRepo.getAllSubForums();
+        String subforumId = requestEvent.getPathParameters().get("subforumId");
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
-        responseEvent.setBody(mapper.toJson(subForums));
 
+        if (subforumId == null || subforumId.trim().equals("")) {
+            List<Node> subForums = nodeRepo.getAllSubForums();
+            responseEvent.setBody(mapper.toJson(subForums));
+        } else {
+            List<Node> threads = nodeRepo.getAllThreads(subforumId);
+            responseEvent.setBody(mapper.toJson(threads));
+        }
         responseEvent.setStatusCode(200);
         return responseEvent;
     }
