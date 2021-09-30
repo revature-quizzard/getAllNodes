@@ -25,7 +25,10 @@ public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyReq
         LambdaLogger logger = context.getLogger();
         logger.log("RECEIVED EVENT: " + requestEvent);
 
-        String subforumId = requestEvent.getPathParameters().get("subforumId");
+        String subforumId = null;
+        if (requestEvent.getPathParameters() != null) {
+            subforumId = requestEvent.getPathParameters().get("subforumId");
+        }
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
 
         if (subforumId == null || subforumId.trim().equals("")) {

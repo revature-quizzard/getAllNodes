@@ -51,15 +51,15 @@ public class NodeRepository {
     }
 
     public List<Node> getAllThreads(String id) throws RuntimeException, ValidationException {
-        if(!getSubforumById(id).isPresent() || !NodeService.isValidParent((getParent(id).get())))
+        if(!getSubforumById(id).isPresent() || !NodeService.isValidParent((getParent(id).get()))) {
             throw new ValidationException("Subforum ID does not exist");
-
+        }
         Map<String, AttributeValue> queryInputs = new HashMap<>();
-        queryInputs.put(":id", new AttributeValue().withS(id));
+        queryInputs.put(":parent", new AttributeValue().withS(id));
 
         DynamoDBQueryExpression query = new DynamoDBQueryExpression()
                 .withIndexName("parent-date_created-index")
-                .withKeyConditionExpression("id = :id")
+                .withKeyConditionExpression("parent = :parent")
                 .withExpressionAttributeValues(queryInputs)
                 .withConsistentRead(false);
 
