@@ -5,5 +5,5 @@ Resources:
       Timeout: 300
       MemorySize: 256
       Handler: com.revature.get_nodes.GetAllSubForumsHandler
-      CodeUri: C:\Users\Sean\getSubforum
+      CodeUri: C:\Users\lunah\Documents\revature_projects\project-3\getSubforum
       Runtime: java8.al2
