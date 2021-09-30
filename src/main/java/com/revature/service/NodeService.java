@@ -14,5 +14,7 @@ public class NodeService {
      * @author Hiroshi Nobuoka
      */
 
-    public static boolean isValidParent(Node parent){return parent.getAncestors().size() == 0 ? true : false;}
+    public static boolean isValidParent(Node parent){
+        return parent.getAncestors() == null || parent.getAncestors().size() == 0;
+    }
 }
