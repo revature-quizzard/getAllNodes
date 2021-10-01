@@ -11,6 +11,7 @@ import com.revature.models.Node;
 import com.revature.repos.NodeRepository;
 import lombok.SneakyThrows;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,12 @@ public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyReq
             responseEvent.setBody(mapper.toJson(threads));
         }
         responseEvent.setStatusCode(200);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Access-Control-Allow-Headers", "Content-Type,X-Amz-Date,Authorization");
+        headers.put("Access-Control-Allow-Origin", "*");
+        responseEvent.setHeaders(headers);
+
         return responseEvent;
     }
 
