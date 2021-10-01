@@ -25,7 +25,11 @@ public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyReq
         List<Node> subForums = nodeRepo.getAllSubforums();
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
         responseEvent.setBody(mapper.toJson(subForums));
-
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Access-Control-Allow-Headers", "Content-Type,X-Amz-Date,Authorization");
+        headers.put("Access-Control-Allow-Origin", "*");
+        responseEvent.setHeaders(headers);
+        responseEvent.setStatusCode(200)
         return responseEvent;
     }
 }
