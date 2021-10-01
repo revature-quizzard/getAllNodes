@@ -29,7 +29,7 @@ public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyReq
         headers.put("Access-Control-Allow-Headers", "Content-Type,X-Amz-Date,Authorization");
         headers.put("Access-Control-Allow-Origin", "*");
         responseEvent.setHeaders(headers);
-        responseEvent.setStatusCode(200)
+        responseEvent.setStatusCode(200);
         return responseEvent;
     }
 }
