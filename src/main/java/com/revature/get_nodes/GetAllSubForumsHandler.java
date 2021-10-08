@@ -9,7 +9,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.revature.models.Node;
 import com.revature.repos.NodeRepository;
+import lombok.SneakyThrows;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,19 +21,33 @@ public class GetAllSubForumsHandler implements RequestHandler<APIGatewayProxyReq
     private static final Gson mapper = new GsonBuilder().setPrettyPrinting().create();
     private final NodeRepository nodeRepo = new NodeRepository();
 
+    @SneakyThrows
     @Override
     public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
         LambdaLogger logger = context.getLogger();
         logger.log("RECEIVED EVENT: " + requestEvent);
 
-        List<Node> subForums = nodeRepo.getAllSubforums();
+        String subforumId = null;
+        if (requestEvent.getPathParameters() != null) {
+            subforumId = requestEvent.getPathParameters().get("subforumId");
+        }
         APIGatewayProxyResponseEvent responseEvent = new APIGatewayProxyResponseEvent();
-        responseEvent.setBody(mapper.toJson(subForums));
+
+        if (subforumId == null || subforumId.trim().equals("")) {
+            List<Node> subForums = nodeRepo.getAllSubForums();
+            responseEvent.setBody(mapper.toJson(subForums));
+        } else {
+            List<Node> threads = nodeRepo.getAllThreads(subforumId);
+            responseEvent.setBody(mapper.toJson(threads));
+        }
+        responseEvent.setStatusCode(200);
+
         Map<String, String> headers = new HashMap<>();
         headers.put("Access-Control-Allow-Headers", "Content-Type,X-Amz-Date,Authorization");
         headers.put("Access-Control-Allow-Origin", "*");
         responseEvent.setHeaders(headers);
-        responseEvent.setStatusCode(200);
+
         return responseEvent;
     }
+
 }
